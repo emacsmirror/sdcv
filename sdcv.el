@@ -5,7 +5,8 @@
 ;; Maintainer: Andy Stewart <lazycat.manatee@gmail.com>, stardiviner(numbchild@gmail.com>
 ;; Copyright (C) 2009, Andy Stewart, all rights reserved.
 ;; Created: 2009-02-05 22:04:02
-;; Version: 1.5.2
+;; Package-Version: 20220210.1412
+;; Package-Revision: 98e239c7380c
 ;; Last-Updated: 2009-04-04 09:11:00
 ;;           By: Andy Stewart
 ;; URL: https://repo.or.cz/sdcv.el.git
@@ -392,7 +393,11 @@ The result will be displayed in buffer named with
            (sdcv-mode-reinit))))))
 
   ;; pronounce the word (Add by me)
-  (sdcv-pronounce-word word)
+  (when sdcv-word-pronounce
+    ;; `sleep-for', `sit-for'.
+    (sleep-for 1)
+    (sdcv-pronounce-word word)
+    )
   )
 
 (defun sdcv-search-simple (&optional word)
