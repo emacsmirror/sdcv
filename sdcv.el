@@ -47,6 +47,7 @@
 ;; Search input word and display with buffer.
 ;; `sdcv-search-input+'
 ;; Search input word and display with `popup tooltip'.
+;; `sdcv-set-dictionaries-list'
 ;;
 ;; Tips:
 ;;
@@ -318,6 +319,28 @@ And show information use tooltip."
         (setq sdcv-previous-window-configuration nil)
         (bury-buffer (sdcv-get-buffer)))
     (bury-buffer)))
+
+(defvar sdcv-dictionaries
+  (delq nil
+        (mapcar
+         (lambda (line) (delete "" (string-split line " ")))
+         (seq-drop (string-split (shell-command-to-string "sdcv --list-dicts") "\n") 1)))
+  "A pair list of sdcv dictionaries.")
+
+(defun sdcv-set-dictionaries-list ()
+  "Set `sdcv-dictionary-simple-list' or `sdcv-dictionary-complete-list'."
+  (interactive)
+  (set (intern
+        (completing-read "[sdcv] select dictionary list variable: "
+                         '(sdcv-dictionary-simple-list
+                           sdcv-dictionary-complete-list)))
+       (let ((completion-extra-properties
+              '(:annotation-function
+                (lambda (candidate)
+                  (concat (propertize " " 'display '(space :align-to center))
+                          "word count: "
+                          (car (alist-get candidate sdcv-dictionaries nil nil 'string-equal)))))))
+         (completing-read-multiple "[sdcv] Select dictionaries: " sdcv-dictionaries))))
 
 (defun sdcv-next-dictionary ()
   "Jump to next dictionary."
