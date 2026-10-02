@@ -463,7 +463,7 @@ Argument SDCV-STRING the search string from sdcv."
     (with-temp-buffer
       (insert sdcv-string)
       (goto-char (point-min))
-      (kill-line 1)                     ;remove unnecessary information.
+      (delete-line) ;; (kill-line 1)                     ;remove unnecessary information.
       (buffer-string))))
 
 (defun sdcv-goto-sdcv ()
